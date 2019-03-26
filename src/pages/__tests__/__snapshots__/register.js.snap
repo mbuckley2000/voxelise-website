@@ -27,7 +27,7 @@ exports[`renders 1`] = `
                 src="test-file-stub"
                 style="margin-right: 1.5em;"
               />
-              Starter Store
+              Home
             </a>
             <div
               class="right menu"

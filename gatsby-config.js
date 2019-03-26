@@ -4,19 +4,19 @@ require('dotenv').config({
 
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby starter ecommerce',
-    author: 'Parminder Sanghera',
-    description: 'A starter e-commerce site made using Gatsby.',
-    siteUrl: 'https://parmsang.github.io/gatsby-starter-ecommerce/',
+    title: 'Voxelise',
+    author: 'Matt Buckley',
+    description: '3D voxelisation platform',
+    siteUrl: 'http://localhost:8000',
   },
   pathPrefix: '/gatsby-starter-ecommerce',
   plugins: [
     {
-      resolve: '@moltin/gatsby-source-moltin',
+      resolve: 'gatsby-source-strapi',
       options: {
-        client_id:
-          process.env.MOLTIN_CLIENT_ID ||
-          'j6hSilXRQfxKohTndUuVrErLcSJWP15P347L6Im0M4',
+        apiURL: 'http://localhost:1337',
+        contentTypes: ['mesh'],
+        queryLimit: 1000,
       },
     },
     {

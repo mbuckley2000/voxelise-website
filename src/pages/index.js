@@ -4,7 +4,7 @@ import get from 'lodash/get'
 import {Image, Header} from 'semantic-ui-react'
 import ProductList from '../components/ProductList'
 import SEO from '../components/SEO'
-import logo from '../images/ill-short-dark.svg'
+import logo from '../images/logo.svg.png'
 import Layout from '../components/Layout'
 
 const StoreIndex = ({location}) => {
@@ -15,27 +15,18 @@ const StoreIndex = ({location}) => {
           title
         }
       }
-      allMoltinProduct {
+      allStrapiMesh {
         edges {
           node {
-            id
             name
-            description
-            background_colour
-            new
-            mainImageHref
-            meta {
-              display_price {
-                with_tax {
-                  amount
-                  currency
-                  formatted
-                }
-              }
+            id
+            user {
+              username
+              id
             }
-            mainImage {
+            thumbnail {
               childImageSharp {
-                sizes(maxWidth: 600) {
+                sizes(maxWidth: 400) {
                   ...GatsbyImageSharpSizes
                 }
               }
@@ -47,8 +38,8 @@ const StoreIndex = ({location}) => {
   `)
 
   const siteTitle = get(data, 'site.siteMetadata.title')
-  const products = get(data, 'allMoltinProduct.edges')
-  const filterProductsWithoutImages = products.filter(v => v.node.mainImageHref)
+  const products = get(data, 'allStrapiMesh.edges')
+  const filterProductsWithoutImages = products.filter(v => v.node.thumbnail)
   return (
     <Layout location={location}>
       <SEO title={siteTitle} />
@@ -66,7 +57,11 @@ const StoreIndex = ({location}) => {
             margin: '0 auto',
           }}
         >
-          <Image src={logo} alt="logo" />
+          <Image
+            style={{margin: '20 auto', width: '100%'}}
+            src={logo}
+            alt="logo"
+          />
         </Header.Content>
       </Header>
       <ProductList products={filterProductsWithoutImages} />

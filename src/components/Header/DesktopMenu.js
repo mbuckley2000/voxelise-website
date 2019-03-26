@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import {Link, withPrefix} from 'gatsby'
 import {Menu, Container, Icon} from 'semantic-ui-react'
-import ShoppingCartIcon from './ShoppingCartIcon'
 import Logo from './Logo'
 
-const DesktopMenu = ({location: {pathname}, token, cartCount, signout}) => {
+const DesktopMenu = ({location: {pathname}, token, signout}) => {
   const [activeItem, setActiveItem] = useState(pathname)
 
   useEffect(() => {
@@ -21,10 +20,11 @@ const DesktopMenu = ({location: {pathname}, token, cartCount, signout}) => {
           header
         >
           <Logo />
-          Starter Store
+          Home
         </Menu.Item>
         {token ? (
           <Menu.Menu position="right">
+            <Menu.Item onClick={signout}>Sign out</Menu.Item>
             <Menu.Item
               as={Link}
               to="/myaccount/"
@@ -33,14 +33,13 @@ const DesktopMenu = ({location: {pathname}, token, cartCount, signout}) => {
               <Icon name="user" />
               My Account
             </Menu.Item>
-            <Menu.Item onClick={signout}>Sign out</Menu.Item>
-            <Menu.Item
+            {/* <Menu.Item
               as={Link}
               to="/cart/"
               active={activeItem === withPrefix('/cart/')}
             >
               <ShoppingCartIcon cartCount={cartCount} name="Cart" />
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu.Menu>
         ) : (
           <Menu.Menu position="right">
@@ -58,13 +57,13 @@ const DesktopMenu = ({location: {pathname}, token, cartCount, signout}) => {
             >
               Sign in
             </Menu.Item>
-            <Menu.Item
+            {/* <Menu.Item
               as={Link}
               to="/cart/"
               active={activeItem === withPrefix('/cart/')}
             >
               <ShoppingCartIcon cartCount={cartCount} name="Cart" />
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu.Menu>
         )}
       </Container>
