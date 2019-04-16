@@ -4,16 +4,15 @@ import AuthContext from './AuthContext'
 const AuthProvider = ({children}) => {
   const [token, setToken] = useState(null)
 
-  const updateToken = () => setToken(localStorage.getItem('customerToken'))
+  const updateToken = () => setToken(localStorage.getItem('token'))
 
   const signOut = () => {
-    localStorage.removeItem('customerToken')
+    localStorage.removeItem('token')
     setToken('')
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('customerToken')
-    setToken(token)
+    setToken(localStorage.getItem('token'))
   }, [])
 
   return (

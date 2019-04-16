@@ -1,48 +1,78 @@
-import React, {useState, useEffect, useContext} from 'react'
-import {navigate} from 'gatsby'
+import React, {Component} from 'react'
+import axios from 'axios'
+import {Header, Button, Grid, Message} from 'semantic-ui-react'
+
 import SEO from '../components/SEO'
-import OrderItemList from '../components/OrderItemList'
 import Layout from '../components/Layout'
-import AuthContext from '../components/Context/AuthContext'
+import ProductList from '../components/ProductList'
+import {navigate} from 'gatsby'
 
-import {getOrders} from '../../lib/moltin'
+class MyAccount extends Component {
+  state = {
+    meshes: [],
+    user: {id: ''},
+    jwt: '',
+  }
 
-const MyAccount = ({location}) => {
-  const [loading, setLoading] = useState(false)
-  const [orders, setOrders] = useState([])
-  const [included, setIncluded] = useState([])
-  const [meta, setMeta] = useState({})
-  const {token} = useContext(AuthContext)
+  componentWillMount() {
+    const jwt = localStorage.getItem('jwt')
+    const user = JSON.parse(localStorage.getItem('user'))
 
-  useEffect(() => {
-    if (!token) {
-      navigate('/login/')
+    this.setState({jwt, user})
+
+    if (!jwt || !user) {
+      // Not logged in
+      navigate('login')
     }
-    getOrders(token)
-      .then(({data, meta, included}) => {
-        const orders = data.map(order => ({
-          ...order,
-        }))
-        setLoading(false)
-        setMeta(meta)
-        setOrders(orders)
-        setIncluded(included)
+
+    console.log(user)
+
+    axios
+      .get(`http://localhost:1337/meshes?user=${user._id}`)
+      .then(response => {
+        this.setState({meshes: response.data})
+        console.log(response.data)
       })
       .catch(error => {
         console.log(error)
       })
-  }, [token])
+  }
 
-  return (
-    <Layout location={location}>
-      <SEO title="My Account" />
-      <OrderItemList
-        meta={meta}
-        orders={orders}
-        loading={loading}
-        included={included}
-      />
-    </Layout>
-  )
+  renderMeshesList(meshes) {
+    if (meshes.length === 0) {
+      return (
+        <Message warning>
+          <Message.Header>You haven't uploaded any meshes yet!</Message.Header>
+          <p>Try uploading one now.</p>
+        </Message>
+      )
+    }
+
+    return <ProductList products={meshes} />
+  }
+
+  render() {
+    const {location} = this.props
+    const filterMeshes = this.state.meshes.filter(m => m.thumbnail)
+
+    return (
+      <Layout location={location}>
+        <SEO title="My Account" />
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <Header as="h1">My Meshes</Header>
+            </Grid.Column>
+            <Grid.Column textAlign="right">
+              <Button primary>Upload</Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
+        {this.renderMeshesList(filterMeshes)}
+      </Layout>
+    )
+  }
 }
+
 export default MyAccount

@@ -1,35 +1,70 @@
 {
-  "env": {
-    "browser": true,
-    "es6": true,
-    "jest/globals": true
-  },
-  "extends": ["airbnb", "prettier", "prettier/react"],
+  "extends": "eslint-config-akveo-react",
   "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
-      "jsx": true
-    },
-    "sourceType": "module"
-  },
-  "plugins": ["react", "prettier", "jest"],
   "rules": {
-    "prettier/prettier": "error",
-    "import/no-extraneous-dependencies": "off",
-    "react/jsx-filename-extension": "off",
-    "jsx-a11y/anchor-is-valid": "off",
-    "no-console": 0,
-    "no-underscore-dangle": [2, { "allowAfterThis": true }],
-    "no-shadow": "off",
-    "jsx-a11y/label-has-for": [
-      2,
-      {
-        "required": {
-          "every": ["id"]
-        }
+    "react/jsx-closing-bracket-location": [1, {
+      "selfClosing": "tag-aligned",
+      "nonEmpty": "after-props"
+    }],
+    "react/sort-comp": [1, {
+      "order": [
+        "prop-types",
+        "navigation",
+        "platform-refs",
+        "instance-variables",
+        "lifecycle",
+        "instance-methods",
+        "static-methods",
+        "everything-else",
+        "render"
+      ],
+      "groups": {
+        "prop-types": [
+          "propTypes",
+          "defaultProps"
+        ],
+        "navigation": [
+          "navigationOptions"
+        ],
+        "platform-refs": [
+          "displayName",
+          "statics",
+          "mixins",
+          "contextTypes",
+          "childContextTypes",
+          "state"
+        ],
+        "lifecycle": [
+          "constructor",
+          "getDefaultProps",
+          "getInitialState",
+          "getChildContext",
+          "getDerivedStateFromProps",
+          "componentWillMount",
+          "UNSAFE_componentWillMount",
+          "componentDidMount",
+          "componentWillReceiveProps",
+          "UNSAFE_componentWillReceiveProps",
+          "shouldComponentUpdate",
+          "componentWillUpdate",
+          "UNSAFE_componentWillUpdate",
+          "getSnapshotBeforeUpdate",
+          "componentDidUpdate",
+          "componentDidCatch",
+          "componentWillUnmount"
+        ]
       }
-    ],
-    "react/prop-types": 0
+    }]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".android.js",
+          ".ios.js"
+        ]
+      }
+    }
   }
 }

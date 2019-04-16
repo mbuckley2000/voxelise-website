@@ -6,6 +6,7 @@ import get from 'lodash/get'
 import ProductSummary from '../components/ProductSummary'
 import ProductAttributes from '../components/ProductAttributes'
 import Layout from '../components/Layout'
+import {OBJModel} from 'react-3d-viewer'
 
 class ProductPageTemplate extends React.PureComponent {
   render() {
@@ -13,7 +14,7 @@ class ProductPageTemplate extends React.PureComponent {
     const data = productInfo.edges[0].node
     // const image = get(data, 'mainImageHref')
     const sizes = get(data, 'thumbnail.childImageSharp.sizes')
-    const {id, name} = data
+    const {id, name, file} = data
 
     if (!sizes) return null
 
@@ -23,6 +24,18 @@ class ProductPageTemplate extends React.PureComponent {
         {/* <ProductSummary {...product} /> */}
         {/* <ProductAttributes {...product} /> */}
         {name}
+        <OBJModel
+          width="400"
+          height="400"
+          // position={{x:0,y:-100,z:0}}
+          src={file.publicURL}
+          onLoad={() => {
+            //...
+          }}
+          onProgress={xhr => {
+            //...
+          }}
+        />
       </Layout>
     )
   }
@@ -47,6 +60,9 @@ export const pageQuery = graphql`
                 ...GatsbyImageSharpSizes
               }
             }
+          }
+          file {
+            publicURL
           }
         }
       }

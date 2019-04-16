@@ -6,7 +6,7 @@ import {navigate} from 'gatsby'
 import {Header, Form, Input, Button, Segment, Message} from 'semantic-ui-react'
 import SEO from '../components/SEO'
 import AuthContext from '../components/Context/AuthContext'
-import {register} from '../../lib/moltin'
+import {register} from '../../lib/strapiAuth'
 import Layout from '../components/Layout'
 import useForm from '../components/Hooks/useForm'
 
@@ -18,21 +18,25 @@ const Register = ({location}) => {
   const formRegister = () => {
     setLoading(true)
     register({
-      name: values.name,
+      username: values.name,
       email: values.email,
       password: values.password,
     })
       .then(data => {
-        const {id, token} = data
-        localStorage.setItem('customerToken', token)
-        localStorage.setItem('mcustomer', id)
-        updateToken()
+        const {user, jwt} = data
+        localStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem('jwt', jwt)
         navigate('/myaccount/')
       })
       .catch(e => {
-        console.log(e)
         setLoading(false)
-        setApiError(e.errors || e)
+        setApiError([
+          {
+            title: 'Sorry',
+            detail: e.response.data.message,
+            status: e.response.data.message,
+          },
+        ])
       })
   }
 
@@ -41,13 +45,11 @@ const Register = ({location}) => {
     validate,
   )
 
-  const handleErrors = errors => {
-    if (!Array.isArray(errors) && !errors.length > 0) {
-      return (
-        <Message error header="Sorry" content="Cannot register at this time." />
-      )
+  const handleErrors = apiErrors => {
+    if (!Array.isArray(apiErrors) && !apiErrors.length > 0) {
+      return <Message error header="Sorry" content="Failed to register user." />
     }
-    return errors.map(e => (
+    return apiErrors.map(e => (
       <Message error header={e.title} content={e.detail} key={e.status} />
     ))
   }
@@ -56,11 +58,15 @@ const Register = ({location}) => {
     <Layout location={location}>
       <SEO title="Register" />
       <Header as="h1">Create an account</Header>
-      <Form onSubmit={handleSubmit} loading={loading} error={!!errors}>
-        {apiError.length !== 0 ? handleErrors(errors) : null}
+      <Form
+        onSubmit={handleSubmit}
+        loading={loading}
+        error={apiError.length !== 0 || Object.entries(errors).length !== 0}
+      >
+        {apiError.length !== 0 ? handleErrors(apiError) : null}
         <Segment>
           <Form.Field>
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Username</label>
             <Input
               id="name"
               fluid

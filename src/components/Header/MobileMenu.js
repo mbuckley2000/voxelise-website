@@ -10,7 +10,6 @@ import {
   Button,
 } from 'semantic-ui-react'
 import styled from 'styled-components'
-import ShoppingCartIcon from './ShoppingCartIcon'
 import Logo from './Logo'
 
 const StyledLink = styled(Link)`
@@ -67,7 +66,7 @@ const StyledDivider = styled(Divider)`
   }
 `
 
-const MobileMenu = ({location: {pathname}, token, cartCount, signout}) => {
+const MobileMenu = ({location: {pathname}, token, signout}) => {
   const [activeItem, setActiveItem] = useState(pathname)
   const [open, setOpen] = useState(false)
 
@@ -92,13 +91,6 @@ const MobileMenu = ({location: {pathname}, token, cartCount, signout}) => {
           Store
         </Menu.Item>
         <Menu.Menu position="right">
-          <Menu.Item
-            as={Link}
-            to="/cart/"
-            active={activeItem === withPrefix('/cart/')}
-          >
-            <ShoppingCartIcon cartCount={cartCount} name="" />
-          </Menu.Item>
           <Menu.Item position="right">
             <BurgerButton
               basic
@@ -124,10 +116,6 @@ const MobileMenu = ({location: {pathname}, token, cartCount, signout}) => {
               </CloseButton>
               <StyledLink to="/" onClick={handleClose}>
                 Home
-              </StyledLink>
-              <StyledDivider />
-              <StyledLink to="/cart/" onClick={handleClose}>
-                {`Shopping Cart ${cartCount ? `(${cartCount})` : ''}`}
               </StyledLink>
               <StyledDivider />
               {token

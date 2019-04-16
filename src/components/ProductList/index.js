@@ -10,31 +10,21 @@ const capitalise = s => {
 }
 
 const mapProductsToItems = products =>
-  products.map(({node: {name, id, thumbnail, user}}) => {
+  products.map(({name, id, thumbnail, user}) =>
     // const price = meta.display_price.with_tax.formatted || null
-    return {
+    ({
       as: Link,
       to: `/product/${id}/`,
       childKey: id,
-      image: (
-        <Image>
-          <Img
-            sizes={thumbnail.childImageSharp.sizes}
-            alt={capitalise(name)}
-            style={{
-              background: '#fafafa',
-            }}
-          />
-        </Image>
-      ),
+      image: <Image src={`http://localhost:1337${thumbnail.url}`} />,
       header: capitalise(name),
       meta: (
         <Card.Meta style={{color: 'dimgray'}}>
           {capitalise(user.username)}
         </Card.Meta>
       ),
-    }
-  })
+    }),
+  )
 
 export default ({products}) => (
   <Card.Group items={mapProductsToItems(products)} itemsPerRow={2} stackable />
