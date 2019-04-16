@@ -1,41 +1,41 @@
-import React, {Component} from 'react'
-import axios from 'axios'
-import {Header, Button, Grid, Message} from 'semantic-ui-react'
+import React, { Component } from 'react';
+import axios from 'axios';
+import { Header, Button, Grid, Message } from 'semantic-ui-react';
 
-import SEO from '../components/SEO'
-import Layout from '../components/Layout'
-import ProductList from '../components/ProductList'
-import {navigate} from 'gatsby'
+import SEO from '../components/SEO';
+import Layout from '../components/Layout';
+import ProductList from '../components/ProductList';
+import { navigate } from 'gatsby';
 
 class MyAccount extends Component {
   state = {
     meshes: [],
-    user: {id: ''},
+    user: { id: '' },
     jwt: '',
   }
 
   componentWillMount() {
-    const jwt = localStorage.getItem('jwt')
-    const user = JSON.parse(localStorage.getItem('user'))
+    const jwt = localStorage.getItem('jwt');
+    const user = JSON.parse(localStorage.getItem('user'));
 
-    this.setState({jwt, user})
+    this.setState({ jwt, user });
 
     if (!jwt || !user) {
       // Not logged in
-      navigate('login')
+      navigate('login');
     }
 
-    console.log(user)
+    console.log(user);
 
     axios
       .get(`http://localhost:1337/meshes?user=${user._id}`)
       .then(response => {
-        this.setState({meshes: response.data})
-        console.log(response.data)
+        this.setState({ meshes: response.data });
+        console.log(response.data);
       })
       .catch(error => {
-        console.log(error)
-      })
+        console.log(error);
+      });
   }
 
   renderMeshesList(meshes) {
@@ -45,15 +45,15 @@ class MyAccount extends Component {
           <Message.Header>You haven't uploaded any meshes yet!</Message.Header>
           <p>Try uploading one now.</p>
         </Message>
-      )
+      );
     }
 
-    return <ProductList products={meshes} />
+    return <ProductList products={meshes} />;
   }
 
   render() {
-    const {location} = this.props
-    const filterMeshes = this.state.meshes.filter(m => m.thumbnail)
+    const { location } = this.props;
+    const filterMeshes = this.state.meshes.filter(m => m.thumbnail);
 
     return (
       <Layout location={location}>
@@ -71,8 +71,8 @@ class MyAccount extends Component {
 
         {this.renderMeshesList(filterMeshes)}
       </Layout>
-    )
+    );
   }
 }
 
-export default MyAccount
+export default MyAccount;
