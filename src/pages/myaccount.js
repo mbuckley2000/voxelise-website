@@ -12,13 +12,15 @@ class MyAccount extends Component {
     meshes: [],
     user: { id: '' },
     jwt: '',
+    loading: false,
+    apiError: '',
   }
 
   componentWillMount() {
     const jwt = localStorage.getItem('jwt');
     const user = JSON.parse(localStorage.getItem('user'));
 
-    this.setState({ jwt, user });
+    this.setState({ jwt, user, loading: true });
 
     if (!jwt || !user) {
       // Not logged in
@@ -35,6 +37,10 @@ class MyAccount extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.setState({ apiError: error.message });
+      })
+      .then(() => {
+        this.setState({ loading: false });
       });
   }
 
@@ -53,7 +59,18 @@ class MyAccount extends Component {
 
   render() {
     const { location } = this.props;
-    const filterMeshes = this.state.meshes.filter(m => m.thumbnail);
+
+    if (this.state.loading) {
+      return null;
+    }
+
+    if (this.state.apiError) {
+      return (
+        <Layout location={location}>
+          <Message error header='Error' content={this.state.apiError} />
+        </Layout>
+      );
+    }
 
     return (
       <Layout location={location}>
@@ -64,12 +81,12 @@ class MyAccount extends Component {
               <Header as="h1">My Meshes</Header>
             </Grid.Column>
             <Grid.Column textAlign="right">
-              <Button primary>Upload</Button>
+              <Button onClick={() => navigate('uploadMesh')} primary>Upload</Button>
             </Grid.Column>
           </Grid.Row>
         </Grid>
 
-        {this.renderMeshesList(filterMeshes)}
+        {this.renderMeshesList(this.state.meshes)}
       </Layout>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Header, Button, Grid, Message } from 'semantic-ui-react';
+import { Header, Button, Grid, Modal, Tab, Message } from 'semantic-ui-react';
 
 import SEO from '../components/SEO';
 import Layout from '../components/Layout';
@@ -40,29 +40,100 @@ class Mesh extends Component {
       });
   }
 
+  isLoggedIn() {
+    return this.state.user && this.state.jwt;
+  }
+
+  isOurMesh() {
+    return this.state.user._id === this.state.mesh.user._id;
+  }
+
+  renderDeleteButton() {
+    if (!this.isLoggedIn() || !this.isOurMesh()) {
+      return null;
+    }
+
+    return (
+      <Modal
+        trigger={<Button color='red'>Delete</Button>}
+        header='Delete'
+        content={`Are you sure you want to delete ${this.state.mesh.name}?`}
+        actions={['No', { key: 'yes', content: 'Yes', negative: true }]}
+        onActionClick={() => this.deleteMesh()}
+      />
+
+    );
+  }
+
+  deleteMesh() {
+    console.log('Delete mesh');
+    axios.delete(`http://localhost:1337/meshes/${this.state.mesh._id}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .then(() => {
+        navigate('myaccount');
+      });
+  }
+
   render() {
     const { location } = this.props;
     // const filterMeshes = this.state.meshes.filter(m => m.thumbnail);
     if (this.state.mesh.file) {
       const { name, file } = this.state.mesh;
+
+      const panes = [
+        {
+          menuItem: 'Mesh',
+          render: () => (
+            <Tab.Pane textAlign='center'>
+              <OBJModel
+                width="670"
+                height="400"
+                // position={{x:0,y:-100,z:0}}
+                src={`http://localhost:1337${file.url}`}
+                onLoad={() => {
+                // ...
+            }}
+                onProgress={xhr => {
+                // ...
+            }}
+              />
+            </Tab.Pane>
+          ),
+        },
+        {
+          menuItem: 'Voxelised',
+          render: () => (
+            <Tab.Pane>
+              <Message
+                header='Please wait'
+                content='Your mesh is being voxelised'
+              />
+            </Tab.Pane>),
+        },
+      ];
+
       return (
         <Layout location={location}>
           {/* <SEO title={slug} /> */}
           {/* <ProductSummary {...product} /> */}
           {/* <ProductAttributes {...product} /> */}
-          <Header as="h1">{name}</Header>
-          <OBJModel
-            width="400"
-            height="400"
-            // position={{x:0,y:-100,z:0}}
-            src={`http://localhost:1337${file.url}`}
-            onLoad={() => {
-              // ...
-            }}
-            onProgress={xhr => {
-              // ...
-            }}
-          />
+          <Grid columns={2}>
+            <Grid.Row>
+              <Grid.Column>
+                <Header as="h1">{name}</Header>
+              </Grid.Column>
+              <Grid.Column textAlign="right">
+                {this.renderDeleteButton()}
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
+          <Tab panes={panes} />
         </Layout>
       );
     }

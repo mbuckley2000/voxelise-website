@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react'
-import {Link, withPrefix} from 'gatsby'
-import {Menu, Container, Icon} from 'semantic-ui-react'
-import Logo from './Logo'
+import React, { useState, useEffect } from 'react';
+import { Link, withPrefix } from 'gatsby';
+import { Menu, Container, Icon } from 'semantic-ui-react';
+import Logo from './Logo';
 
-const DesktopMenu = ({location: {pathname}, token, signout}) => {
-  const [activeItem, setActiveItem] = useState(pathname)
+const DesktopMenu = ({ location: { pathname }, token, signout }) => {
+  const [activeItem, setActiveItem] = useState(pathname);
 
   useEffect(() => {
-    setActiveItem(pathname)
-  }, [pathname])
+    setActiveItem(pathname);
+  }, [pathname]);
 
   return (
     <Menu size="huge" borderless pointing>
@@ -17,8 +17,7 @@ const DesktopMenu = ({location: {pathname}, token, signout}) => {
           active={activeItem === withPrefix('/')}
           as={Link}
           to="/"
-          header
-        >
+          header>
           <Logo />
           Home
         </Menu.Item>
@@ -28,10 +27,9 @@ const DesktopMenu = ({location: {pathname}, token, signout}) => {
             <Menu.Item
               as={Link}
               to="/myaccount/"
-              active={activeItem === withPrefix('/myaccount/')}
-            >
+              active={activeItem === withPrefix('/myaccount/')}>
               <Icon name="user" />
-              My Account
+              My Meshes
             </Menu.Item>
             {/* <Menu.Item
               as={Link}
@@ -46,15 +44,13 @@ const DesktopMenu = ({location: {pathname}, token, signout}) => {
             <Menu.Item
               as={Link}
               to="/register/"
-              active={activeItem === withPrefix('/register/')}
-            >
+              active={activeItem === withPrefix('/register/')}>
               Sign up
             </Menu.Item>
             <Menu.Item
               as={Link}
               to="/login/"
-              active={activeItem === withPrefix('/login/')}
-            >
+              active={activeItem === withPrefix('/login/')}>
               Sign in
             </Menu.Item>
             {/* <Menu.Item
@@ -68,7 +64,7 @@ const DesktopMenu = ({location: {pathname}, token, signout}) => {
         )}
       </Container>
     </Menu>
-  )
-}
+  );
+};
 
-export default DesktopMenu
+export default DesktopMenu;

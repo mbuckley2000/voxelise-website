@@ -1,22 +1,22 @@
-import React from 'react'
-import {Link} from 'gatsby'
-import {Segment, Container, Grid, List, Header} from 'semantic-ui-react'
+import React from 'react';
+import { Link } from 'gatsby';
+import { Segment, Container, Grid, List, Header } from 'semantic-ui-react';
 
 const twitterLink = (
   <a href="https://twitter.com/parmsang" alt="twitter link">
     Twitter
   </a>
-)
+);
 const facebookLink = (
   <a href="https://facebook.com/" alt="facebook link">
     Facebook
   </a>
-)
+);
 const emailLink = (
-  <a href="mailto:john@doe.com" alt="email link">
+  <a href="mailto:mail@mattbuckley.org" alt="email link">
     Email
   </a>
-)
+);
 
 const Footer = () => (
   <Segment
@@ -25,12 +25,11 @@ const Footer = () => (
       padding: '4em 0em',
       marginTop: '3em',
       borderTop: '1px solid #f2f2f2',
-    }}
-  >
+    }}>
     <Container text>
       <Grid stackable>
         <Grid.Row>
-          <Grid.Column width={4}>
+          {/* <Grid.Column width={4}>
             <Header as="h4" content="About" />
             <List>
               <List.Item as={Link} to="/privacy/">
@@ -48,27 +47,26 @@ const Footer = () => (
                 Our Products
               </List.Item>
             </List>
-          </Grid.Column>
-          <Grid.Column width={7}>
-            <Header as="h4">Footer Header</Header>
+          </Grid.Column> */}
+          <Grid.Column > {/* width={7} */}
+            <Header as="h4">Voxelise</Header>
             <p>
-              Extra space for a call to action inside the footer that could help
-              re-engage users.
+              Created as a dissertation software project by Matt Buckley at University of Bath in 2019
             </p>
-            <List horizontal style={{display: 'flex'}}>
-              <List.Item
+            <List horizontal style={{ display: 'flex' }}>
+              {/* <List.Item
                 icon="twitter"
-                style={{display: 'flex'}}
+                style={{ display: 'flex' }}
                 content={twitterLink}
               />
               <List.Item
                 icon="facebook"
-                style={{display: 'flex'}}
+                style={{ display: 'flex' }}
                 content={facebookLink}
-              />
+              /> */}
               <List.Item
                 icon="mail"
-                style={{display: 'flex'}}
+                style={{ display: 'flex' }}
                 content={emailLink}
               />
             </List>
@@ -77,6 +75,6 @@ const Footer = () => (
       </Grid>
     </Container>
   </Segment>
-)
+);
 
-export default Footer
+export default Footer;
