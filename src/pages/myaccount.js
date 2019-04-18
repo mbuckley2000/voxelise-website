@@ -1,47 +1,49 @@
-import React, {Component} from 'react'
-import axios from 'axios'
-import {Header, Button, Grid, Message} from 'semantic-ui-react'
+import React, { Component } from 'react';
+import axios from 'axios';
+import { Header, Button, Grid, Message } from 'semantic-ui-react';
 
-import SEO from '../components/SEO'
-import Layout from '../components/Layout'
-import ProductList from '../components/ProductList'
-import {navigate} from 'gatsby'
+import SEO from '../components/SEO';
+import Layout from '../components/Layout';
+import ProductList from '../components/ProductList';
+import { navigate } from 'gatsby';
 
 class MyAccount extends Component {
   state = {
     meshes: [],
-    user: {id: ''},
+    user: { id: '' },
     jwt: '',
     loading: false,
     apiError: '',
   }
 
   componentWillMount() {
-    const jwt = localStorage.getItem('jwt')
-    const user = JSON.parse(localStorage.getItem('user'))
+    if (typeof (localStorage) !== 'undefined') {
+      const jwt = localStorage.getItem('jwt');
+      const user = JSON.parse(localStorage.getItem('user'));
 
-    this.setState({jwt, user, loading: true})
+      this.setState({ jwt, user, loading: true });
 
-    if (!jwt || !user) {
+      if (!jwt || !user) {
       // Not logged in
-      navigate('login')
+        navigate('login');
+      }
+
+      console.log(user);
+
+      axios
+        .get(`https://voxelise-api.mattbuckley.org/meshes?user=${user._id}`)
+        .then(response => {
+          this.setState({ meshes: response.data });
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({ apiError: error.message });
+        })
+        .then(() => {
+          this.setState({ loading: false });
+        });
     }
-
-    console.log(user)
-
-    axios
-      .get(`https://voxelise-api.mattbuckley.org/meshes?user=${user._id}`)
-      .then(response => {
-        this.setState({meshes: response.data})
-        console.log(response.data)
-      })
-      .catch(error => {
-        console.log(error)
-        this.setState({apiError: error.message})
-      })
-      .then(() => {
-        this.setState({loading: false})
-      })
   }
 
   renderMeshesList(meshes) {
@@ -51,17 +53,17 @@ class MyAccount extends Component {
           <Message.Header>You haven't uploaded any meshes yet!</Message.Header>
           <p>Try uploading one now.</p>
         </Message>
-      )
+      );
     }
 
-    return <ProductList products={meshes} />
+    return <ProductList products={meshes} />;
   }
 
   render() {
-    const {location} = this.props
+    const { location } = this.props;
 
     if (this.state.loading) {
-      return null
+      return null;
     }
 
     if (this.state.apiError) {
@@ -69,7 +71,7 @@ class MyAccount extends Component {
         <Layout location={location}>
           <Message error header="Error" content={this.state.apiError} />
         </Layout>
-      )
+      );
     }
 
     return (
@@ -90,8 +92,8 @@ class MyAccount extends Component {
 
         {this.renderMeshesList(this.state.meshes)}
       </Layout>
-    )
+    );
   }
 }
 
-export default MyAccount
+export default MyAccount;
