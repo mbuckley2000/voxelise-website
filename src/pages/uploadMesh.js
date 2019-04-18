@@ -42,7 +42,7 @@ class UploadMesh extends Component {
     const formData = new FormData()
     formData.append('files', this.state.file)
     axios
-      .post('http://localhost:1337/upload', formData, {
+      .post('https://voxelise-api.mattbuckley.org/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -72,7 +72,7 @@ class UploadMesh extends Component {
 
     axios
       .post(
-        'http://localhost:1337/meshes',
+        'https://voxelise-api.mattbuckley.org/meshes',
         data,
         {
           headers: {

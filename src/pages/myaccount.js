@@ -30,7 +30,7 @@ class MyAccount extends Component {
     console.log(user)
 
     axios
-      .get(`http://localhost:1337/meshes?user=${user._id}`)
+      .get(`https://voxelise-api.mattbuckley.org/meshes?user=${user._id}`)
       .then(response => {
         this.setState({meshes: response.data})
         console.log(response.data)

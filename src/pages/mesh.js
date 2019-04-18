@@ -30,7 +30,7 @@ class Mesh extends Component {
     console.log(user)
 
     axios
-      .get(`http://localhost:1337/meshes/${meshID}`)
+      .get(`https://voxelise-api.mattbuckley.org/meshes/${meshID}`)
       .then(response => {
         this.setState({mesh: response.data})
         console.log(response.data)
@@ -67,7 +67,9 @@ class Mesh extends Component {
   deleteMesh() {
     console.log('Delete mesh')
     axios
-      .delete(`http://localhost:1337/meshes/${this.state.mesh._id}`)
+      .delete(
+        `https://voxelise-api.mattbuckley.org/meshes/${this.state.mesh._id}`,
+      )
       .then(response => {
         console.log(response)
       })
@@ -94,7 +96,7 @@ class Mesh extends Component {
                 width="670"
                 height="400"
                 // position={{x:0,y:-100,z:0}}
-                src={`http://localhost:1337${file.url}`}
+                src={`https://voxelise-api.mattbuckley.org${file.url}`}
                 onLoad={() => {
                   // ...
                 }}
@@ -124,7 +126,7 @@ class Mesh extends Component {
                 width="670"
                 height="400"
                 // position={{x:0,y:-100,z:0}}
-                src={`http://localhost:1337${volume.file.url}`}
+                src={`https://voxelise-api.mattbuckley.org${volume.file.url}`}
                 onLoad={() => {
                   // ...
                 }}
