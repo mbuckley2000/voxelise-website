@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Header, Button, Grid, Message } from 'semantic-ui-react';
+import { Header, Button, Grid, Message, Loader } from 'semantic-ui-react';
 
 import SEO from '../components/SEO';
 import Layout from '../components/Layout';
@@ -63,7 +63,11 @@ class MyAccount extends Component {
     const { location } = this.props;
 
     if (this.state.loading) {
-      return null;
+      return (
+        <Layout location={location}>
+          <Loader active />
+        </Layout>
+      );
     }
 
     if (this.state.apiError) {

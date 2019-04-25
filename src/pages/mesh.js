@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Header, Button, Grid, Modal, Tab, Message } from 'semantic-ui-react';
-
+import Iframe from 'react-iframe';
+import { navigate } from 'gatsby';
+import { OBJModel } from 'react-3d-viewer';
 import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 import ProductList from '../components/ProductList';
-import { navigate } from 'gatsby';
-import { OBJModel } from 'react-3d-viewer';
+
 
 class Mesh extends Component {
   state = {
@@ -121,18 +122,20 @@ class Mesh extends Component {
               );
             }
 
+            const volumeURL = `https://voxelise-api.mattbuckley.org${this.state.mesh.volume.file.url}`;
+
+            const names = this.state.mesh.volume.file.name.split('/');
+            const volumeName = `${names[names.length - 1].replace(/\./g, '')}`;
+
             return (
-              <OBJModel
-                width="670"
-                height="400"
-                // position={{x:0,y:-100,z:0}}
-                src={`https://voxelise-api.mattbuckley.org${volume.file.url}`}
-                onLoad={() => {
-                  // ...
-                }}
-                onProgress={xhr => {
-                  // ...
-                }}
+              <Iframe
+                url={`/view_volume/?url=${volumeURL}&filename=/${volumeName}`}
+                width="100%"
+                height="550px"
+                id="myId"
+                className="myClassname"
+                display="initial"
+                position="relative"
               />
             );
           },
