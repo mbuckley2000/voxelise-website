@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Image, Header} from 'semantic-ui-react'
+import {Image, Header, Loader, Message} from 'semantic-ui-react'
 import axios from 'axios'
 import ProductList from '../components/ProductList'
 import SEO from '../components/SEO'
@@ -9,17 +9,35 @@ import Layout from '../components/Layout'
 class StoreIndex extends Component {
   state = {
     meshes: [],
+    loading: true,
   }
 
   componentWillMount() {
     axios
       .get('https://voxelise-api.mattbuckley.org/meshes')
       .then(response => {
-        this.setState({meshes: response.data})
+        this.setState({meshes: response.data, loading: false})
       })
       .catch(error => {
         console.log(error)
       })
+  }
+
+  renderMeshList() {
+    if (this.state.loading) {
+      return <Loader active />
+    }
+
+    if (this.state.meshes.length === 0) {
+      return (
+        <Message warning>
+          <Message.Header>No meshes have been uploaded yet</Message.Header>
+          <p>Try uploading one!</p>
+        </Message>
+      )
+    }
+
+    return <ProductList products={this.state.meshes} />
   }
 
   render() {
@@ -54,7 +72,7 @@ class StoreIndex extends Component {
             />
           </Header.Content>
         </Header>
-        <ProductList products={this.state.meshes} />
+        {this.renderMeshList()}
       </Layout>
     )
   }
