@@ -1,0 +1,3 @@
+Access-Control-Allow-Origin: https://voxelise-api.mattbuckley.org
+/sw.js   # Gatsby's default service worker file path
+Cache-Control: no-cache
