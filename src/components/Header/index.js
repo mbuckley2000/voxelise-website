@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
-import { Responsive } from 'semantic-ui-react';
+import React from 'react';
 import { navigate } from 'gatsby';
 
 import DesktopMenu from './DesktopMenu';
-import MobileMenu from './MobileMenu';
 
 const Header = ({ location }) => {
   let token;
   let signOut;
-  if (typeof (localStorage) !== 'undefined') {
+  if (typeof localStorage !== 'undefined') {
     token = localStorage.getItem('jwt');
     signOut = () => {
       localStorage.clear();
@@ -16,16 +14,7 @@ const Header = ({ location }) => {
     };
   }
 
-  return (
-    <>
-      <Responsive maxWidth={Responsive.onlyMobile.maxWidth}>
-        <MobileMenu location={location} token={token} signout={signOut} />
-      </Responsive>
-      <Responsive minWidth={Responsive.onlyTablet.minWidth}>
-        <DesktopMenu location={location} token={token} signout={signOut} />
-      </Responsive>
-    </>
-  );
+  return <DesktopMenu location={location} token={token} signout={signOut} />;
 };
 
 export default Header;

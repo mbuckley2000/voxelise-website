@@ -1,10 +1,16 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-use-before-define */
 
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { navigate } from 'gatsby';
-import { Header, Form, Input, Button, Segment, Message } from 'semantic-ui-react';
-import SEO from '../components/SEO';
+import {
+  Header,
+  Form,
+  Input,
+  Button,
+  Segment,
+  Message,
+} from 'semantic-ui-react';
 import { login } from '../../lib/strapiAuth';
 import Layout from '../components/Layout';
 import useForm from '../components/Hooks/useForm';
@@ -58,7 +64,6 @@ const LoginPage = ({ location }) => {
   };
   return (
     <Layout location={location}>
-      <SEO title="Login" />
       <Header as="h1">Log in to your account</Header>
       <Form
         onSubmit={handleSubmit}
@@ -99,7 +104,6 @@ const LoginPage = ({ location }) => {
           </Button>
         </Segment>
         <a href="/register">Don't have an account? Register now</a>
-
       </Form>
     </Layout>
   );
