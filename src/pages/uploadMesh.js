@@ -41,6 +41,34 @@ class UploadMesh extends Component {
 
   onFormSubmit() {
     this.setState({loading: true, apiError: ''})
+
+    // Check name
+    if (!this.state.name) {
+      this.setState({loading: false, apiError: 'Please enter a name'})
+      return
+    }
+
+    // Check name
+    if (this.state.name.length < 3) {
+      this.setState({
+        loading: false,
+        apiError: 'Name must be at least 3 characters',
+      })
+      return
+    }
+
+    // Check file selected
+    if (!this.state.file) {
+      this.setState({loading: false, apiError: 'Please select a file'})
+      return
+    }
+
+    // Check file size
+    if (this.state.file.size > 1000000) {
+      this.setState({loading: false, apiError: 'File size exceeds 1MB'})
+      return
+    }
+
     const formData = new FormData()
     formData.append('files', this.state.file)
     axios
@@ -100,8 +128,8 @@ class UploadMesh extends Component {
     return (
       <Layout location={location}>
         <Header as="h1">Upload Mesh</Header>
+        {this.renderErrors()}
         <Form loading={this.state.loading}>
-          {this.renderErrors()}
           <Form.Field>
             <label>Name</label>
             <input
@@ -111,7 +139,7 @@ class UploadMesh extends Component {
             />
           </Form.Field>
           <Form.Field>
-            <label>Mesh File (1 MiB Max)</label>
+            <label>Mesh File (1 MB Max)</label>
             <input
               onChange={event => this.setState({file: event.target.files[0]})}
               type="file"
