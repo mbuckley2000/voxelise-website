@@ -98,6 +98,8 @@ const LoginPage = ({ location }) => {
             Login
           </Button>
         </Segment>
+        <a href="/register">Don't have an account? Register now</a>
+
       </Form>
     </Layout>
   );
