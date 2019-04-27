@@ -63,6 +63,12 @@ class UploadMesh extends Component {
       return;
     }
 
+    // Check it's a .obj
+    if (this.state.file.name.toLowerCase().split('.').pop() !== 'obj') {
+      this.setState({ loading: false, apiError: 'Must be a .obj file' });
+      return;
+    }
+
     // Check file size
     if (this.state.file.size > 1000000) {
       this.setState({ loading: false, apiError: 'File size exceeds 1MB' });
@@ -139,7 +145,7 @@ class UploadMesh extends Component {
             />
           </Form.Field>
           <Form.Field>
-            <label>Mesh File (1 MB Max)</label>
+            <label>Mesh File (.obj 1MB Max)</label>
             <input
               onChange={event => this.setState({ file: event.target.files[0] })}
               type="file"
