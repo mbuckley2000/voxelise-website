@@ -7,7 +7,12 @@ import { OBJModel } from 'react-3d-viewer';
 import _ from 'lodash';
 import Layout from '../components/Layout';
 import MeshList from '../components/MeshList';
+import MeshViewer from '../components/MeshViewer';
 
+const capitalise = s => {
+  if (typeof s !== 'string') return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
 class Mesh extends Component {
   state = {
     mesh: {},
@@ -85,6 +90,42 @@ class Mesh extends Component {
     );
   }
 
+  renderVolume() {
+    const { volume } = this.state.mesh;
+
+    if (!volume) {
+      return (
+        <Message
+          header='Please wait'
+          content='Your mesh is being voxelised. Refresh the page in a few seconds.'
+        />
+      );
+    }
+
+    const volumeURL = `https://voxelise-api.mattbuckley.org${
+      volume.file.url
+    }`;
+
+    const names = volume.file.name.split('/');
+    const volumeName = `${names[names.length - 1].replace(/\./g, '')}`;
+    return (
+      <div>
+
+        <Iframe
+          url={`/view_volume/?url=${volumeURL}&filename=/${volumeName}`}
+          width="100%"
+          height="550px"
+          id="myId"
+          className="myClassname"
+          display="initial"
+          position="relative"
+        />
+        <p>About: This is your Voxelised mesh in 100x100x100 UINT8 RAW format</p>
+      </div>
+
+    );
+  }
+
   deleteMesh() {
     console.log('Delete mesh');
     axios
@@ -104,80 +145,29 @@ class Mesh extends Component {
     const { location } = this.props;
     // const filterMeshes = this.state.meshes.filter(m => m.thumbnail);
     if (this.state.mesh.file) {
-      const { name, file, volume } = this.state.mesh;
-
-      const panes = [
-        {
-          menuItem: 'Mesh',
-          render: () => (
-            <Tab.Pane textAlign="center">
-              <OBJModel
-                width="670"
-                height="400"
-                // position={{x:0,y:-100,z:0}}
-                src={`https://voxelise-api.mattbuckley.org${file.url}`}
-                onLoad={() => {
-                  // ...
-                }}
-                onProgress={xhr => {
-                  // ...
-                }}
-              />
-            </Tab.Pane>
-          ),
-        },
-        {
-          menuItem: 'Voxelised',
-          render: () => {
-            if (!this.state.mesh.processed) {
-              return (
-                <Tab.Pane>
-                  <Message
-                    header="Please wait"
-                    content="Your mesh is being voxelised"
-                  />
-                </Tab.Pane>
-              );
-            }
-
-            const volumeURL = `https://voxelise-api.mattbuckley.org${
-              this.state.mesh.volume.file.url
-            }`;
-
-            const names = this.state.mesh.volume.file.name.split('/');
-            const volumeName = `${names[names.length - 1].replace(/\./g, '')}`;
-
-            return (
-              <Iframe
-                url={`/view_volume/?url=${volumeURL}&filename=/${volumeName}`}
-                width="100%"
-                height="550px"
-                id="myId"
-                className="myClassname"
-                display="initial"
-                position="relative"
-              />
-            );
-          },
-        },
-      ];
+      const {
+        name, file, user,
+      } = this.state.mesh;
 
       return (
         <Layout location={location}>
           <Grid columns={2}>
-            <Grid.Row>
-              <Grid.Column>
-                <Header as="h1">{name}</Header>
-                <Header as="h3">Preview</Header>
+            <Grid.Row textAlign="left">
+              <Grid.Column >
+                <MeshViewer url={`https://voxelise-api.mattbuckley.org${file.url}`} />
               </Grid.Column>
-              <Grid.Column textAlign="right">
+              <Grid.Column>
+                <br />
+                <Header as="h1" style={{ 'margin-bottom': 0 }}>{capitalise(name)}</Header>
+                <p>{capitalise(user.username)}</p>
                 {this.renderDownloadButtons()}
                 {this.renderDeleteButton()}
               </Grid.Column>
             </Grid.Row>
           </Grid>
+          <br />
+          {this.renderVolume()}
 
-          <Tab panes={panes} />
         </Layout>
       );
     }

@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import { Card } from 'semantic-ui-react';
-import { OBJModel } from 'react-3d-viewer';
 import { Link } from 'gatsby';
+
+import MeshViewer from '../MeshViewer';
 
 const capitalise = s => {
   if (typeof s !== 'string') return '';
@@ -10,21 +11,7 @@ const capitalise = s => {
 };
 
 const viewer = url => (
-  <OBJModel
-    width="334"
-    height="200"
-    enableKeys={false}
-    enableRotate={false}
-    enableZoom={false}
-    // position={{x:0,y:-100,z:0}}
-    src={url}
-    onLoad={() => {
-      // ...
-    }}
-    onProgress={xhr => {
-      // ...
-    }}
-  />
+  <MeshViewer url={url} />
 );
 
 const mapProductsToItems = products =>
