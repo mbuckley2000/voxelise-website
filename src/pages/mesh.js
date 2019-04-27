@@ -64,7 +64,7 @@ class Mesh extends Component {
       <a
         href={`https://voxelise-api.mattbuckley.org${
           this.state.mesh.volume.file.url
-        }`}>
+          }`}>
         <Button
           content="Download RAW"
           icon="cloud download"
@@ -102,9 +102,7 @@ class Mesh extends Component {
       );
     }
 
-    const volumeURL = `https://voxelise-api.mattbuckley.org${
-      volume.file.url
-    }`;
+    const volumeURL = `https://voxelise-api.mattbuckley.org${volume.file.url}`;
 
     const names = volume.file.name.split('/');
     const volumeName = `${names[names.length - 1].replace(/\./g, '')}`;
@@ -114,12 +112,16 @@ class Mesh extends Component {
         <Iframe
           url={`/view_volume/?url=${volumeURL}&filename=/${volumeName}`}
           width="100%"
-          height="550px"
+          height="500px"
           id="myId"
           className="myClassname"
           display="initial"
           position="relative"
+          frameBorder="0"
+          style={{ overflow: 'hidden', backgroundColor: 'black' }}
         />
+        <p>Mouse Controls: Left-click + drag to rotate, scroll to zoom, right-click + drag to pan.</p>
+        <p>Touch Controls: One finger drag to rotate, pinch to zoom, two finger drag to pan.</p>
         <p>About: This is your Voxelised mesh in 100x100x100 UINT8 RAW format</p>
       </div>
 
