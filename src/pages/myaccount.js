@@ -50,7 +50,7 @@ class MyAccount extends Component {
       return (
         <Message warning>
           <Message.Header>You haven't uploaded any meshes yet!</Message.Header>
-          <p>Try uploading one now.</p>
+          <p>Try uploading one <a href="/uploadMesh">here</a></p>
         </Message>
       );
     }
