@@ -97,7 +97,7 @@ class Mesh extends Component {
       return (
         <Message
           header='Please wait'
-          content='Your mesh is being voxelised. Refresh the page in a few seconds.'
+          content={<p>Your mesh is being voxelised. Try <a href="javascript:window.location.href=window.location.href">refreshing the page</a> in a few seconds</p>}
         />
       );
     }

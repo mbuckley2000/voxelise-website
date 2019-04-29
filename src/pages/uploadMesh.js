@@ -8,6 +8,7 @@ import { navigate } from 'gatsby';
 class UploadMesh extends Component {
   state = {
     name: '',
+    nameEdited: false,
     file: null,
     user: {},
     jwt: '',
@@ -129,6 +130,23 @@ class UploadMesh extends Component {
       });
   }
 
+  onNameFieldChange(event) {
+    this.setState({ name: event.target.value, nameEdited: true });
+  }
+
+  onFileFieldChange(event) {
+    this.setState({ file: event.target.files[0] });
+
+    if (!this.state.nameEdited) {
+      let name = '';
+      if (event.target.files[0]) {
+        name = capitalise(event.target.files[0].name.split('.')[0]);
+      }
+
+      this.setState({ name });
+    }
+  }
+
   render() {
     const { location } = this.props;
     return (
@@ -140,15 +158,16 @@ class UploadMesh extends Component {
             <label>Name</label>
             <input
               value={this.state.name}
-              onChange={event => this.setState({ name: event.target.value })}
+              onChange={event => this.onNameFieldChange(event)}
               placeholder="Name"
             />
           </Form.Field>
           <Form.Field>
             <label>Mesh File (.obj 1MB Max)</label>
             <input
-              onChange={event => this.setState({ file: event.target.files[0] })}
+              onChange={event => this.onFileFieldChange(event)}
               type="file"
+              accept=".obj"
               placeholder="Name"
             />
           </Form.Field>
@@ -179,4 +198,10 @@ const getQueryString = (field, url) => {
   const reg = new RegExp(`[?&]${field}=([^&#]*)`, 'i');
   const string = reg.exec(href);
   return string ? string[1] : null;
+};
+
+
+const capitalise = s => {
+  if (typeof s !== 'string') return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
 };
