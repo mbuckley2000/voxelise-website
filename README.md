@@ -1,46 +1,24 @@
-# Gatsby Starter eCommerce
+# Voxelise Website
 
-Gatsby starter for creating an eCommerce site using [Moltin eCommerce Api ](https://moltin.com/).
+A static web frontend for the voxelise platform
 
-This starter adapts an [existing](https://github.com/moltin-examples/nextjs-demo-store) NextJS eCommerce starter for [GatsbyJS](https://www.gatsbyjs.org/).
+Hosted for free on Netlify at
+[https://voxelise.mattbuckley.org](https://voxelise.mattbuckley.org)
 
-Demo: <https://parmsang.github.io/gatsby-starter-ecommerce/>
+**Based on Netlify starter:
+[gatsby-starter-ecommerce](https://github.com/parmsang/gatsby-starter-ecommerce)**
 
-This starter originally used Gatsby v1 and has now been updated to v2. The original version can be found in branch "gatsby-v1".
+**Uses
+[webgl-volume-raycaster](https://github.com/Twinklebear/webgl-volume-raycaster)
+for volume rendering**
 
-## Warning
+#### To run:
 
-This starter is currently work in progress
+1. Ensure you have Node.js and npm configured
+2. `npm install`
+3. `sudo npm i -g gatsby-cli`
+4. `gatsby develop`
 
-## Getting started
+### To build:
 
-Install this starter (assuming Gatsby is installed) by running from your CLI:
-
-`gatsby new gatsby-store https://github.com/parmsang/gatsby-starter-ecommerce`
-
-### Running in development
-
-`npm run develop`
-
-### Additional Setup
-
-Both a moltin and Stripe account are needed for this store to run successfully.
-
-Create a `.env.development` and `.env.production` file at the project root with your moltin `client_id` and Stripe test `publishable key`.
-
-```dosini
-MOLTIN_CLIENT_ID=
-STRIPE_PUBLISHABLE_KEY=
-```
-
-## Features
-
-- Moltin eCommerce API
-- React 16
-- PWA (includes manifest.webmanifest & offline support)
-- Eslint & Prettier
-- Styled Components
-- Google Analytics - (you enter the tracking-id)
-- Semantic-UI
-- Authentication via Moltin (Login and Register)
-- Stripe checkout
+`gatsby build`
